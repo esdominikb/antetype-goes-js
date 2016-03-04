@@ -5,6 +5,6 @@
 //document.commandManager().executeCommand(command);
 
 
-var core = new CORE();
+var antetype = new CORE();
 
-log(core.countSelectedObjects());
+log(antetype.countSelectedObjects());
