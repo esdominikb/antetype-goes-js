@@ -41,7 +41,7 @@ ANTETYPE_JS_CORE.prototype.getSelectedObjects = function () {
  * @return {*}
  */
 ANTETYPE_JS_CORE.prototype.getScreens = function () {
-    return this.project.orderedScreens();
+    return this.project().orderedScreens();
 };
 
 /**
