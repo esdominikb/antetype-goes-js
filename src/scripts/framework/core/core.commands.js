@@ -83,24 +83,20 @@ ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callbac
 
 
     var addColorToArray = function(color){
-        //log(typeof color);
-        //if(!colors.indexOf(color)){
-            colors.push(color);
-        //};
 
+        if(colors.indexOf(color) === -1) {
+            colors.push(color);
+        }
     };
 
     utils.forEach(screens, function(screen){
         var cells = screen.deepOrderedComponents();
 
         utils.forEach(cells, function(cell){
-            var bgColor = cell.backgroundColor().hex();
+            var bgColor = String(cell.backgroundColor().hexadecimalString());
             addColorToArray(bgColor);
         });
-
-        log(colors);
-
     });
 
-
+    log(colors);
 };
