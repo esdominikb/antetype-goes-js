@@ -79,27 +79,13 @@ ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callbac
                 // call callback
 
     var screens = this.core.getScreens();
-    var colors = [];
 
-
-    var addColorToArray = function(color){
-
-        if(colors.indexOf(color) === -1) {
-            colors.push(color);
-        }
-    };
 
     utils.forEach(screens, function(screen){
         var cells = screen.deepOrderedComponents();
 
         utils.forEach(cells, function(cell){
-            var bgColor = String(cell.backgroundColor().rgbaString());
-            var borderBottomColor = String(cell.borderBottomColor().rgbaString());
-
-            //TODO check for other properties
-
-            log('BOTTOMCOLOR ' + borderBottomColor);
-            addColorToArray(bgColor);
+            callback(cell);
         });
     });
 
