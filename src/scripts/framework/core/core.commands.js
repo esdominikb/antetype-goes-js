@@ -67,3 +67,15 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
     document.commandManager().executeCommand(command);
 };
 
+
+/**
+ * dynamic function to loop through all screen elements.
+ * useful for global fonts, colors,...
+ */
+ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callback) {
+    // search for screens
+        // iterate through screens
+            // iterate through cells
+                // call callback
+
+};
