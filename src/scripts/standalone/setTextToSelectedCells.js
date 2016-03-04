@@ -8,7 +8,7 @@
 var antetype = new CORE();
 
 
-var selectedObjs = core.selectionController.selectedObjects();
+var selectedObjs = antetype.selectionController.selectedObjects();
 
 
 antetype.forEach(selectedObjs, function(obj){
