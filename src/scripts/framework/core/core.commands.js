@@ -78,4 +78,29 @@ ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callbac
             // iterate through cells
                 // call callback
 
+    var screens = this.core.getScreens();
+    var colors = [];
+
+
+    var addColorToArray = function(color){
+        //log(typeof color);
+        //if(!colors.indexOf(color)){
+            colors.push(color);
+        //};
+
+    };
+
+    utils.forEach(screens, function(screen){
+        var cells = screen.deepOrderedComponents();
+
+        utils.forEach(cells, function(cell){
+            var bgColor = cell.backgroundColor().hex();
+            addColorToArray(bgColor);
+        });
+
+        log(colors);
+
+    });
+
+
 };

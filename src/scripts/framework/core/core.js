@@ -20,10 +20,28 @@ ANTETYPE_JS_CORE.prototype.screenChangeManager = screenChangeManager;
 
 /**
  *
+ */
+ANTETYPE_JS_CORE.prototype.document = document;
+
+/**
+ *
+ */
+ANTETYPE_JS_CORE.prototype.project = document.project();
+
+/**
+ *
  * @return {*}
  */
 ANTETYPE_JS_CORE.prototype.getSelectedObjects = function () {
     return this.selectionController.selectedObjects();
+};
+
+/**
+ *
+ * @return {*}
+ */
+ANTETYPE_JS_CORE.prototype.getScreens = function () {
+    return this.project.orderedScreens();
 };
 
 /**
