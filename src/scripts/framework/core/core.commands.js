@@ -43,7 +43,7 @@ ANTETYPE_CORE_COMMANDS.prototype._createCommand = function (commandName, command
  * @param text text to set
  * @param applyToAllCells flag if text should be set to all Cells of selected objects
  */
-ANTETYPE_CORE_COMMANDS.prototype.setTextForSelectedObjects = function (text, applyToAllCells) {
+ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, applyToAllCells) {
     var core = this.core;
 
     var command = this._createCommand('JSSetTextCommandForSelection', {
