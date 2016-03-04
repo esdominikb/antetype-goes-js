@@ -1,4 +1,5 @@
 var path = require('path');
+var fs = require('fs');
 
 module.exports = function (grunt) {
 
@@ -13,9 +14,29 @@ module.exports = function (grunt) {
 
     };
 
+
+
+    var allStandaloneScripts = function(){
+        var scripts = fs.readdirSync(pathConfig.src + '/scripts/standalone');
+
+        var concatMappingFile = {};
+        for(var i  in scripts){
+            concatMappingFile[pathConfig.build + '/scripts/standalone/' + scripts[i]] = [pathConfig.src + '/scripts/framework/core/core.js', pathConfig.src + '/scripts/standalone/' + scripts[i]];
+        }
+
+        console.log(concatMappingFile);
+        return concatMappingFile;
+    };
+
+
     grunt.initConfig({
         pgk:   grunt.file.readJSON("package.json"),
         paths: pathConfig,
+        concat: {
+            dist: {
+                files: allStandaloneScripts()
+            }
+        },
         clean:{
             antetypeScripts: {
                 options: {
@@ -29,7 +50,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: pathConfig.src + '/scripts/standalone/',
+                        cwd: pathConfig.build + '/scripts/standalone/',
                         src: ["**"],
                         dest: pathConfig.antetypeScripts
                     }
@@ -43,12 +64,12 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['src/scripts/**/**.js'],
-                tasks: ['newer:copy:scriptsToAntetype']
+                tasks: ['concat, newer:copy:scriptsToAntetype']
             }
         }
     });
 
-    grunt.registerTask('moveScriptsToAntetype', ['newer:copy:scriptsToAntetype']);
-    grunt.registerTask('default', ['clean:antetypeScripts', 'moveScriptsToAntetype']);
+    grunt.registerTask('moveScriptsToAntetype', ['concat', 'newer:copy:scriptsToAntetype']);
+    grunt.registerTask('default', ['clean:antetypeScripts', 'concat','moveScriptsToAntetype']);
     grunt.registerTask('run', ['default', 'watch']);
 };
