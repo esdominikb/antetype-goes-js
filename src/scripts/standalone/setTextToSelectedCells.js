@@ -5,8 +5,12 @@
 //document.commandManager().executeCommand(command);
 
 
-var core = new CORE();
+var antetype = new CORE();
 
-for(var obj in core.selectionController.selectedObjects()){
-    log(obj);
-};
+
+var selectedObjs = core.selectionController.selectedObjects();
+
+
+antetype.forEach(selectedObjs, function(obj){
+    log(obj.name());
+});
