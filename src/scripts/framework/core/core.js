@@ -1,3 +1,10 @@
+var console = {
+    log: function(){
+        log.apply(this,arguments);
+    }
+};
+
+
 function CORE(){
 
 };

@@ -12,5 +12,5 @@ var selectedObjs = antetype.selectionController.selectedObjects();
 
 
 antetype.forEach(selectedObjs, function(obj){
-    log(obj.name());
+    console.log(obj.name());
 });
