@@ -7,4 +7,6 @@
 
 var core = new CORE();
 
-log(core.countSelectedObjects());
+for(var obj in core.selectionController.selectedObjects()){
+    log(obj);
+};

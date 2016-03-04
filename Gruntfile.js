@@ -64,12 +64,12 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['src/scripts/**/**.js'],
-                tasks: ['concat, newer:copy:scriptsToAntetype']
+                tasks: ['concat', 'newer:copy:scriptsToAntetype']
             }
         }
     });
 
     grunt.registerTask('moveScriptsToAntetype', ['concat', 'newer:copy:scriptsToAntetype']);
-    grunt.registerTask('default', ['clean:antetypeScripts', 'concat','moveScriptsToAntetype']);
+    grunt.registerTask('default', ['clean:antetypeScripts','moveScriptsToAntetype']);
     grunt.registerTask('run', ['default', 'watch']);
 };
