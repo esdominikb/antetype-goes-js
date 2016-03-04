@@ -93,7 +93,12 @@ ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callbac
         var cells = screen.deepOrderedComponents();
 
         utils.forEach(cells, function(cell){
-            var bgColor = String(cell.backgroundColor().hexadecimalString());
+            var bgColor = String(cell.backgroundColor().rgbaString());
+            var borderBottomColor = String(cell.borderBottomColor().rgbaString());
+
+            //TODO check for other properties
+
+            log('BOTTOMCOLOR ' + borderBottomColor);
             addColorToArray(bgColor);
         });
     });
