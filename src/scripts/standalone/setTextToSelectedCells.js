@@ -1,16 +1,13 @@
 /*
-    command aufrufen
-*/
-//var command = GDAddEmptyCellCommand.command();
-//document.commandManager().executeCommand(command);
+ command aufrufen
+ */
 
+(function (antetype, utils) {
 
-var antetype = new CORE();
+    // set text only for first child in selected objects
+    //antetype.commands.setTextForSelectedObjects('hah22a');
 
+    // set text for all cells of selected objects
+    antetype.commands.setTextForSelectedObjects('hah22a', true);
 
-var selectedObjs = antetype.selectionController.selectedObjects();
-
-
-antetype.forEach(selectedObjs, function(obj){
-    console.log(obj.name());
-});
+})(new ANTETYPE_JS_CORE(), new ANTETYPE_UTILS());

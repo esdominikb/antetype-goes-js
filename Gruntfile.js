@@ -21,10 +21,13 @@ module.exports = function (grunt) {
 
         var concatMappingFile = {};
         for(var i  in scripts){
-            concatMappingFile[pathConfig.build + '/scripts/standalone/' + scripts[i]] = [pathConfig.src + '/scripts/framework/core/core.js', pathConfig.src + '/scripts/standalone/' + scripts[i]];
+            concatMappingFile[pathConfig.build + '/scripts/standalone/' + scripts[i]] = [
+                pathConfig.src + '/scripts/framework/utils/**.js',
+                pathConfig.src + '/scripts/framework/core/**.js',
+                pathConfig.src + '/scripts/standalone/' + scripts[i]
+            ];
         }
 
-        console.log(concatMappingFile);
         return concatMappingFile;
     };
 
