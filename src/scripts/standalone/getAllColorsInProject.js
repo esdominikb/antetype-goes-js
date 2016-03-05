@@ -4,6 +4,7 @@
 
 (function (antetype, utils) {
 
-    antetype.commands.searchForSomethingInProject(function(){});
+    var foundColors = antetype.commands.getAllColorsInProject();
+    log(foundColors);
 
 })(new ANTETYPE_JS_CORE(), new ANTETYPE_UTILS());
