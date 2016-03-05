@@ -19,7 +19,9 @@ This project is going to develop an useful Javascript API to extend Antetype wit
 
 - Install Node.js
 - Install Grunt CLI global
-    - > $ npm install -g grunt-cli
+    
+    > $ npm install -g grunt-cli
+
 - install local dependencies (in project folder)
     
     > $ npm install 
