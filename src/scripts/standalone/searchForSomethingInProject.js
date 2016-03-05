@@ -2,7 +2,13 @@
  command aufrufen
  */
 
-(function (antetype, utils) {
+(
+/**
+ *
+ * @param antetype
+ * @param utils
+ */
+function (antetype, utils) {
 
     var colors = [];
 
@@ -21,5 +27,7 @@
         log('BOTTOMCOLOR ' + borderBottomColor);
         addColorToArray(bgColor);
     });
+
+    log(colors);
 
 })(new ANTETYPE_JS_CORE(), new ANTETYPE_UTILS());

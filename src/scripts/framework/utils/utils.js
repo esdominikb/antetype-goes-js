@@ -1,3 +1,13 @@
+var _log = log.bind(this);
+
+/**
+ *
+ * @param message
+ */
+var log = function(message){
+    console.log.apply(this, arguments);
+};
+
 /**
  * enable default web javascript console.
  * could be used later on to have an overlay console in antetype for javascript
@@ -6,9 +16,9 @@
 var console = {
     log: function () {
         if (arguments.length > 1) {
-            log(JSON.stringify(arguments));
+            _log('#AntetypeJS : ' + JSON.stringify(arguments));
         } else {
-            log(arguments[0]);
+            _log('#AntetypeJS : ' + arguments[0]);
         }
     }
 };
@@ -18,6 +28,7 @@ var console = {
  * @constructor
  */
 function ANTETYPE_UTILS () {
+    console.log('generate ANTETYPE_UTILS');
 };
 
 /**
@@ -25,8 +36,8 @@ function ANTETYPE_UTILS () {
  * @param obj
  * @param iterator
  */
-ANTETYPE_UTILS.prototype.forEach = function (obj, iterator) {
-    for (var i = 0; i < obj.length(); i++) {
-        iterator(obj[i]);
+ANTETYPE_UTILS.prototype.forEach = function (collection, iterator) {
+    for (var i = 0; i < collection.length(); i++) {
+        iterator(i, collection[i]);
     }
 };

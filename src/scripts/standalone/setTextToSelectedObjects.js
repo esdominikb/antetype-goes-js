@@ -2,7 +2,15 @@
  command aufrufen
  */
 
-(function (antetype, utils) {
+
+(
+/**
+ *
+ * @param antetype
+ * @param utils
+ */
+function (antetype, utils) {
+
 
     // set text only for first child in selected objects
     //antetype.commands.setTextToSelectedObjects('hah22a');
