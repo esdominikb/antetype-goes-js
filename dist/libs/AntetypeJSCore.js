@@ -291,7 +291,7 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
 
             cellFontProperties = {
                 "font-family": String(cell.valueForKey_inState_("textFont", state).fontName()),
-                "font-size": String(cell.valueForKey_inState_("textFont", state).pointSize() + 'px'),
+                "font-size": String(cell.valueForKey_inState_("textFont", state).pointSize()) + 'px',
                 "line-height": (String(cell.valueForKey_inState_("textLineHeightMultiply", state)) === "1") ? String(cell.valueForKey_inState_("textLineHeight", state)) : String(cell.valueForKey_inState_("textLineHeight", state)) + 'px',
                 "color": String(cell.valueForKey_inState_("textColor", state).rgbaString())
                 //"text-shadow": (String(cell.valueForKey_inState_("textShadow", state)) === "0") ? 'none' : (textShadowHorOff + 'px ' + textShadowVerOff + 'px ' + String(cell.valueForKey_inState_("textShadowBlur", state))) + 'px ' + String(cell.valueForKey_inState_("textShadowColor", state).rgbaString())
@@ -309,7 +309,7 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
 
             cellFontProperties = {
                 "font-family": String(cell.textFont().fontName()),
-                "font-size": String(cell.textFont().pointSize() + 'px'),
+                "font-size": String(cell.textFont().pointSize()) + 'px',
                 "line-height": (String(cell.textLineHeightMultiply()) === "1") ? String(cell.textLineHeight()) : String(cell.textLineHeight()) + 'px',
                 "color": String(cell.textColor().rgbaString())
                 //"text-shadow": (String(cell.textShadow()) === "0") ? 'none' : (textShadowHorOff + 'px ' + textShadowVerOff + 'px ' + String(cell.textShadowBlur())) + 'px ' + String(cell.textShadowColor().rgbaString())
@@ -321,8 +321,28 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
         state = cellFontProperties["font-family"] + cellFontProperties["font-size"] + cellFontProperties["line-height"] + cellFontProperties["line-height"];
 
         //Push all colors from cellColor set
-        addFontSetToArray(family, state, JSON.stringify(cellFontProperties));
+        addFontSetToArray(family, state, cellFontProperties);
     });
+
+    for(var family in fontResultSet)
+    {
+        for(var state in fontResultSet[family])
+        {
+            var colors = [];
+
+            for(var color in fontResultSet[family][state])
+            {
+                if(colors.indexOf(fontResultSet[family][state][color]["color"]) !== -1)
+                    colors.push(fontResultSet[family][state][color]["color"]);
+
+                if(color > 0)
+                    delete fontResultSet[family][state][color];
+            }
+
+            if(colors.length > 0)
+                fontResultSet[family][state][0]["color"] = colors;
+        }
+    }
 
     return fontResultSet;
 };
