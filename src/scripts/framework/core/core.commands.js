@@ -54,14 +54,14 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
         execute: function ()
         {
             //Loop all selected objects/cells
-            utils.forEach(core.getSelectedObjects(), function (obj)
+            utils.forEach(core.getSelectedObjects(), function (i, obj)
             {
                 //Check if we apply command to all nested cells
                 //Or just to the selected cell without applying changes to nested childs
                 if (applyToAllCells)
                 {
                     //Loop all nested childs
-                    utils.forEach(obj.deepOrderedComponents(), function (comp)
+                    utils.forEach(obj.deepOrderedComponents(), function (j, comp)
                     {
                         var _text = NSAttributedString.alloc().initWithString_(text + comp.name());
                         comp.setValue_forKey_inState_(_text, "textAttributedString", nil);
@@ -91,20 +91,20 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
 ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (checkStates, callback)
 {
     //Get all screens
-    var screens = this.core.getScreens();
+    var screens = this.core.getAllScreens();
 
     //Loop all screens
-    utils.forEach(screens, function(screen)
+    utils.forEach(screens, function(i, screen)
     {
         //Get all cells including all deeper nested cells
         var cells = screen.deepOrderedComponents();
 
         //Loop all cells and call defined cell callback logic
-        utils.forEach(cells, function(cell)
+        utils.forEach(cells, function(j, cell)
         {
             if(checkStates)
             {
-                utils.forEach(cell.states().allObjects(), function(state) {
+                utils.forEach(cell.states().allObjects(), function(k, state) {
                     callback(cell, state)
                 });
             }

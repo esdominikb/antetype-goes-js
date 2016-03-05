@@ -29,7 +29,7 @@ ANTETYPE_JS_CORE.prototype.document = document;
 ANTETYPE_JS_CORE.prototype.project = document.project();
 
 /**
- *
+ * Array of selected Objecs as NSArray
  * @return {*}
  */
 ANTETYPE_JS_CORE.prototype.getSelectedObjects = function () {
@@ -37,11 +37,27 @@ ANTETYPE_JS_CORE.prototype.getSelectedObjects = function () {
 };
 
 /**
- *
+ * get all screens
  * @return {*}
  */
-ANTETYPE_JS_CORE.prototype.getScreens = function () {
+ANTETYPE_JS_CORE.prototype.getAllScreens = function () {
     return this.project.orderedScreens();
+};
+
+/**
+ * get current  Screen
+ * @return {*} GDScreen
+ */
+ANTETYPE_JS_CORE.prototype.getCurrentScreen = function () {
+    return this.selectionController.currentScreen();
+};
+
+/**
+ * get selected Screens
+ * @return {*}
+ */
+ANTETYPE_JS_CORE.prototype.getSelectedScreens = function () {
+    return this.selectionController.selectedScreens();
 };
 
 /**
