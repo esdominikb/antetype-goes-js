@@ -257,15 +257,19 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
     var fontResultSet = {};
 
     //Helper function to push colors in an array without generating duplicates
-    var addFontSetToArray = function(family, fontSet)
+    var addFontSetToArray = function(family, state, fontSet)
     {
         //log("check " + fontResultSet[family]);
         if(typeof fontResultSet[family] === 'undefined') {
-            fontResultSet[family] = [];
+            fontResultSet[family] = {};
         }
 
-        if(fontResultSet[family].indexOf(fontSet) === -1)
-            fontResultSet[family].push(fontSet);
+        if(typeof fontResultSet[family][state] === 'undefined') {
+            fontResultSet[family][state] = [];
+        }
+
+        if(fontResultSet[family][state].indexOf(fontSet) === -1)
+            fontResultSet[family][state].push(fontSet);
     };
 
     //Loop all cells in project and get colors for defined properties for cells in all states
@@ -273,48 +277,51 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
     {
         var cellFontProperties = {},
             family,
-            textShadowHorOff = false,
-            textShadowVerOff = false;
+            state;
+            //textShadowHorOff,
+            //textShadowVerOff;
 
         if(state)
         {
-            if(String(cell.valueForKey_inState_("textShadow", state)) === "YES")
-            {
-                textShadowHorOff = (Number)(Math.sin(cell.valueForKey_inState_("textShadowAngle", state) * Math.PI / 180.0) * cell.valueForKey_inState_("textShadowOffset", state));
-                textShadowVerOff = (Number)(Math.cos(cell.valueForKey_inState_("textShadowAngle", state) * Math.PI / 180.0) * cell.valueForKey_inState_("textShadowOffset", state) * (-1.0));
-            }
+            //if(String(cell.valueForKey_inState_("textShadow", state)) === "1")
+            //{
+            //    textShadowHorOff = (Number)(Math.sin(Number(cell.valueForKey_inState_("textShadowAngle", state)) * Math.PI / 180.0) * Number(cell.valueForKey_inState_("textShadowOffset", state)));
+            //    textShadowVerOff = (Number)(Math.cos(Number(cell.valueForKey_inState_("textShadowAngle", state)) * Math.PI / 180.0) * Number(cell.valueForKey_inState_("textShadowOffset", state)) * (-1.0));
+            //}
 
             cellFontProperties = {
                 "font-family": String(cell.valueForKey_inState_("textFont", state).fontName()),
                 "font-size": String(cell.valueForKey_inState_("textFont", state).pointSize() + 'px'),
-                "line-height": (String(cell.valueForKey_inState_("textLineHeightMultiply", state)) === "YES") ? String(cell.valueForKey_inState_("textLineHeight", state)) : String(cell.valueForKey_inState_("textLineHeight", state)) + 'px',
-                "color": String(cell.valueForKey_inState_("textColor", state).rgbaString()),
-                "text-shadow": (String(cell.valueForKey_inState_("textShadow", state)) === "NO") ? 'none' : (textShadowHorOff + 'px ' + textShadowVerOff + 'px ' + String(Number(cell.valueForKey_inState_("textShadowBlur", state)).toFixed(1))) + 'px ' + String(cell.valueForKey_inState_("textShadowColor", state).rgbaString())
+                "line-height": (String(cell.valueForKey_inState_("textLineHeightMultiply", state)) === "1") ? String(cell.valueForKey_inState_("textLineHeight", state)) : String(cell.valueForKey_inState_("textLineHeight", state)) + 'px',
+                "color": String(cell.valueForKey_inState_("textColor", state).rgbaString())
+                //"text-shadow": (String(cell.valueForKey_inState_("textShadow", state)) === "0") ? 'none' : (textShadowHorOff + 'px ' + textShadowVerOff + 'px ' + String(cell.valueForKey_inState_("textShadowBlur", state))) + 'px ' + String(cell.valueForKey_inState_("textShadowColor", state).rgbaString())
             };
 
             family = String(cell.valueForKey_inState_("textFont", state).familyName());
         }
         else
         {
-            if(String(cell.textShadow()) === "YES")
-            {
-                textShadowHorOff = (Number)(Math.sin(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset());
-                textShadowVerOff = (Number)(Math.cos(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset() * (-1.0));
-            }
+            //if(String(cell.textShadow()) === "1")
+            //{
+            //    textShadowHorOff = (Number)(Math.sin(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset());
+            //    textShadowVerOff = (Number)(Math.cos(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset() * (-1.0));
+            //}
 
             cellFontProperties = {
                 "font-family": String(cell.textFont().fontName()),
                 "font-size": String(cell.textFont().pointSize() + 'px'),
-                "line-height": (String(cell.textLineHeightMultiply()) === "YES") ? String(cell.textLineHeight()) : String(cell.textLineHeight()) + 'px',
-                "color": String(cell.textColor().rgbaString()),
-                "text-shadow": (String(cell.textShadow()) === "NO") ? 'none' : (textShadowHorOff + 'px ' + textShadowVerOff + 'px ' + String(Number(cell.textShadowBlur()).toFixed(1))) + 'px ' + String(cell.textShadowColor().rgbaString())
+                "line-height": (String(cell.textLineHeightMultiply()) === "1") ? String(cell.textLineHeight()) : String(cell.textLineHeight()) + 'px',
+                "color": String(cell.textColor().rgbaString())
+                //"text-shadow": (String(cell.textShadow()) === "0") ? 'none' : (textShadowHorOff + 'px ' + textShadowVerOff + 'px ' + String(cell.textShadowBlur())) + 'px ' + String(cell.textShadowColor().rgbaString())
             };
 
             family = String(cell.textFont().familyName());
         }
 
+        state = cellFontProperties["font-family"] + cellFontProperties["font-size"] + cellFontProperties["line-height"] + cellFontProperties["line-height"];
+
         //Push all colors from cellColor set
-        addFontSetToArray(family, JSON.stringify(cellFontProperties));
+        addFontSetToArray(family, state, JSON.stringify(cellFontProperties));
     });
 
     return fontResultSet;
