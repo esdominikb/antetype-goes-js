@@ -2,9 +2,9 @@
  command aufrufen
  */
 
-(function (antetype, utils) {
+(function (antetype) {
 
     var foundFonts = antetype.commands.getAllFontsInProject();
     log(foundFonts);
 
-})(new ANTETYPE_JS_CORE(), new ANTETYPE_UTILS());
+})(ANTETYPE_JS_CORE_FACTORY.getInstance());
