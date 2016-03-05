@@ -58,6 +58,7 @@ module.exports = function (grunt) {
                     force: true
                 },
                 src: [
+                    pathConfig.build + '/scripts/**',
                     pathConfig.dist + '/scripts/**',
                     pathConfig.antetypeScripts + '/**'
                 ]
