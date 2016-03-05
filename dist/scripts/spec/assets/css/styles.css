@@ -1,0 +1,141 @@
+body {
+    background-color: #cbcbcb;
+    font-family: helvetica;
+}
+
+.container {
+    background: #f7f7f7;
+    font-family: helvetica;
+    padding: 0;
+}
+
+.logo_top {
+    background: url(../img/Ergosign_dark_RGB.png) top right no-repeat;
+    float: right;
+    height: 54px;
+    width: 167px;
+    margin: 20px 20px 0 0;
+}
+
+.logo_bottom {
+    background: url(../img/Ergosign_light_RGB.png) top right no-repeat;
+    float: right;
+    height: 54px;
+    width: 167px;
+    margin: 20px 0px 0 0;
+}
+
+.footer {
+    background-color: #383a3c;
+    font-family: helvetica;
+    padding: 20px;
+    color: #fff;
+    min-height: 200px;
+}
+
+h1 {
+    padding: 20px;
+}
+
+h2 {
+    padding: 20px;
+    color: #009de0 !important;
+    background-color: #ededed;
+    font-size: 24px;
+    font-weight: 100;
+}
+
+.tablewrapper {
+    padding: 20px;
+}
+
+.table.table.table.table.table.table.table {
+    border-color: #ff0000;
+    border: 1px solid #e6e6e6;
+    box-shadow: none;
+    background-color: #ffffff;
+}
+
+.table.table.table.table.table.table.table th {
+    height: 55px;
+    vertical-align: middle;
+    padding-left: 20px;
+    color: #009de0;
+    border-bottom: 1px solid #e6e6e6;
+    font-size: 18px;
+    font-weight: 100;
+}
+
+.table.table.table.table.table.table.table td {
+    height: 55px;
+    vertical-align: middle;
+    border: none;
+    border-bottom: 1px solid #e6e6e6;
+    padding-left: 20px;
+    color: 383a3c;
+    font-size: 18px;
+    font-weight: 100;
+}
+
+.circle {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: 1px solid #cccccc;
+    display: block;
+    margin-right: 10px;
+    float: left;
+}
+
+.colors ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.colors {
+    padding: 20px;
+}
+
+.colors li {
+    width: 180px;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ededed;
+    background-color: #ffffff;
+}
+
+.colors li .colorname {
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.colors li p {
+    color: #383a3c;
+}
+
+.colors li span {
+    display: block;
+    height: 70px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+li .colordescription {
+    padding: 5px;
+}
+
+#color_copy ul li {
+    width: auto;
+    height: auto;
+    background: none;
+    border: 0;
+    margin: 0;
+    padding 0;
+    float: none;
+}
+
+h2 .dropdown {
+    float: right;
+}
