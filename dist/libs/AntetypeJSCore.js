@@ -307,7 +307,7 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
                 "font-size": String(cell.textFont().pointSize() + 'px'),
                 "line-height": (String(cell.textLineHeightMultiply()) === "YES") ? String(cell.textLineHeight()) : String(cell.textLineHeight()) + 'px',
                 "color": String(cell.textColor().rgbaString()),
-                "text-shadow": "test"
+                "text-shadow": (String(cell.textShadow()) === "NO") ? 'none' : (textShadowHorOff + 'px ' + textShadowVerOff + 'px ' + String(Number(cell.textShadowBlur()).toFixed(1))) + 'px ' + String(cell.textShadowColor().rgbaString())
             };
 
             family = String(cell.textFont().familyName());
