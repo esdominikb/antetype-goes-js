@@ -84,7 +84,24 @@ module.exports = function (grunt) {
                         dest: pathConfig.antetypeScripts
                     }
                 ]
-            }
+            },
+            coreToAntetype: function() {
+
+                if(process.env.HOME == '/Users/dominikbuhl') {
+                    return {
+                        files: [
+                            {
+                                expand: true,
+                                cwd: pathConfig.dist + '/libs/',
+                                src: ["AntetypeJSCore.js"],
+                                dest: path.join(process.env.HOME, '/Ergosign/workspaces/hackathon/2016/antetype_repo/antetype/Prototyper\ Application')
+                            }
+                        ]
+                    };
+                }else{
+                    return {};
+                }
+            }()
         },
         watch: {
             options: {
@@ -93,12 +110,12 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['src/scripts/**/**.js'],
-                tasks: ['concat', 'newer:copy:scriptsToDist','newer:copy:scriptsToAntetype']
+                tasks: ['moveScriptsToAntetype']
             }
         }
     });
 
-    grunt.registerTask('moveScriptsToAntetype', ['concat', 'newer:copy:scriptsToDist', 'newer:copy:scriptsToAntetype']);
+    grunt.registerTask('moveScriptsToAntetype', ['concat', 'newer:copy:scriptsToDist', 'newer:copy:scriptsToAntetype','newer:copy:coreToAntetype']);
     grunt.registerTask('default', ['clean:antetypeScripts','moveScriptsToAntetype']);
     grunt.registerTask('run', ['default', 'watch']);
 };
