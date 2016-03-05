@@ -1,0 +1,190 @@
+{
+    "colors": [
+        {
+            "id": "1"
+            , "hexcode": "009de0"
+            , "name": "Ergosign Blau"
+            , "primary": true
+            , "r": "0"
+            , "g": "157"
+            , "b": "224"
+            , "a": "0.5"
+                }
+        , {
+            "id": "2"
+            , "hexcode": "ffde1d"
+            , "name": "Ergosign Gelb"
+            , "primary": true
+            , "r": "255"
+            , "g": "222"
+            , "b": "29"
+            , "a": "1"
+                }
+        , {
+            "id": "3"
+            , "hexcode": "d6267f"
+            , "name": "Ergosign Magenta"
+            , "primary": false
+            , "r": "330"
+            , "g": "82"
+            , "b": "84"
+            , "a": "1"
+                }   
+        , {
+            "id": "4"
+            , "hexcode": "383a3c"
+            , "name": "Ergosign Anthrazit"
+            , "primary": false
+            , "r": "210"
+            , "g": "7"
+            , "b": "24"
+            , "a": "1"
+                }
+        , {
+            "id": "5"
+            , "hexcode": "383a3c"
+            , "name": "Ergosign Anthrazit 80%"
+            , "primary": false
+            , "r": "30"
+            , "g": "0"
+            , "b": "30"
+            , "a": "0.8"
+                }
+        , {
+            "id": "6"
+            , "hexcode": "575756"
+            , "name": "Ergosign Grau"
+            , "primary": false
+            , "r": "210"
+            , "g": "7"
+            , "b": "24"
+            , "a": "1"
+                }
+        , {
+            "id": "7"
+            , "hexcode": "878787"
+            , "name": "Ergosign Grau 60%"
+            , "primary": false
+            , "r": "135"
+            , "g": "135"
+            , "b": "135"
+            , "a": "1"
+                }
+        , {
+            "id": "8"
+            , "hexcode": "b2b2b2"
+            , "name": "Ergosign Grau 40%"
+            , "primary": false
+            , "r": "178"
+            , "g": "178"
+            , "b": "178"
+            , "a": "1"
+                }
+        , {
+            "id": "9"
+            , "hexcode": "dadada"
+            , "name": "Ergosign Grau 20%"
+            , "primary": false
+            , "r": "218"
+            , "g": "218"
+            , "b": "218"
+            , "a": "1"
+                }
+        , {
+            "id": "10"
+            , "hexcode": "ffffff"
+            , "name": "Ergosign Weiss"
+            , "primary": false
+            , "r": "255"
+            , "g": "255"
+            , "b": "255"
+            , "a": "1"
+                }
+           ]
+
+
+    
+    , "fonts": [
+        {
+            "id": "1"
+            , "fontname": "Roboto"
+            , "style": "Medium"
+            , "size": "36"
+            , "name": "Headline"
+            , "colors": [
+                1, 4, 10
+            ]
+                }
+        , {
+            "id": "2"
+            , "fontname": "Roboto"
+            , "style": "Light"
+            , "size": "36"
+            , "name": "Content Headline"
+            , "colors": [
+                4
+            ]
+                }  
+        , {
+            "id": "3"
+            , "fontname": "Roboto"
+            , "style": "Normal"
+            , "size": "24"
+            , "name": "Headline 2"
+            , "colors": [
+                7
+             ]   }
+        , {
+            "id": "4"
+            , "fontname": "Roboto"
+            , "style": "Normal"
+            , "size": "18"
+            , "name": "Label"
+            , "colors": [
+                4
+            ]
+                }
+        , {
+            "id": "5"
+            , "fontname": "Roboto"
+            , "style": "Light"
+            , "size": "18"
+            , "name": "Navigation"
+            , "colors": [
+                10
+            ]
+                }
+        , {
+            "id": "6"
+            , "fontname": "Roboto"
+            , "style": "Medium"
+            , "size": "14"
+            , "name": "Text"
+            , "colors": [
+                3, 1, 4
+            ]
+                }
+        , {
+            "id": "7"
+            , "fontname": "Roboto"
+            , "style": "Normal"
+            , "size": "14"
+            , "name": "Subtitle"
+            , "colors": [
+                4
+            ]
+                }
+        , {
+            "id": "8"
+            , "fontname": "Roboto"
+            , "style": "Medium"
+            , "size": "11"
+            , "name": "Detail Informaion"
+            , "colors": [
+               10
+            ]
+                }
+            
+
+            ]
+}
