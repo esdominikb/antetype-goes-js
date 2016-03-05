@@ -47,10 +47,11 @@ module.exports = function (grunt) {
         concat: {
             core: {
                 files: antetypeJSCoreScripts()
-            },
-            dist: {
-                files: allStandaloneScripts()
             }
+            //},
+            //dist: {
+            //    files: allStandaloneScripts()
+            //}
         },
         clean:{
             antetypeScripts: {
@@ -69,8 +70,8 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: pathConfig.build + '/scripts/standalone/',
-                        src: ["**"],
+                        cwd: pathConfig.src + '/scripts/standalone/',
+                        src: ["**/**"],
                         dest: pathConfig.dist + '/scripts'
                     }
                 ]
@@ -80,7 +81,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: pathConfig.dist + '/scripts/',
-                        src: ["**"],
+                        src: ["**/**"],
                         dest: pathConfig.antetypeScripts
                     }
                 ]
