@@ -1,13 +1,3 @@
-var _log = log.bind(this);
-
-/**
- *
- * @param message
- */
-var log = function(message){
-    console.log.apply(this, arguments);
-};
-
 /**
  * enable default web javascript console.
  * could be used later on to have an overlay console in antetype for javascript
@@ -16,9 +6,9 @@ var log = function(message){
 var console = {
     log: function () {
         if (arguments.length > 1) {
-            _log('#AntetypeJS : ' + JSON.stringify(arguments));
+            log(JSON.stringify(arguments));
         } else {
-            _log('#AntetypeJS : ' + arguments[0]);
+            log(arguments[0]);
         }
     }
 };
@@ -28,7 +18,6 @@ var console = {
  * @constructor
  */
 function ANTETYPE_UTILS () {
-    console.log('generate ANTETYPE_UTILS');
 };
 
 /**
@@ -36,9 +25,9 @@ function ANTETYPE_UTILS () {
  * @param obj
  * @param iterator
  */
-ANTETYPE_UTILS.prototype.forEach = function (collection, iterator) {
-    for (var i = 0; i < collection.length(); i++) {
-        iterator(i, collection[i]);
+ANTETYPE_UTILS.prototype.forEach = function (obj, iterator) {
+    for (var i = 0; i < obj.length(); i++) {
+        iterator(obj[i]);
     }
 };
 var utils = new ANTETYPE_UTILS();
@@ -86,19 +75,33 @@ ANTETYPE_CORE_COMMANDS.prototype._createCommand = function (commandName, command
  * @param text text to set
  * @param applyToAllCells flag if text should be set to all Cells of selected objects
  */
-ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, applyToAllCells) {
+ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, applyToAllCells)
+{
+    //Hold core functions in this scope
     var core = this.core;
 
+    //Create a new command with execution logic
     var command = this._createCommand('JSSetTextCommandForSelection', {
-        execute: function () {
 
-            utils.forEach(core.getSelectedObjects(), function (i, obj) {
-                if (applyToAllCells) {
-                    utils.forEach(obj.deepOrderedComponents(), function (j, comp) {
+        execute: function ()
+        {
+            //Loop all selected objects/cells
+            utils.forEach(core.getSelectedObjects(), function (obj)
+            {
+                //Check if we apply command to all nested cells
+                //Or just to the selected cell without applying changes to nested childs
+                if (applyToAllCells)
+                {
+                    //Loop all nested childs
+                    utils.forEach(obj.deepOrderedComponents(), function (comp)
+                    {
                         var _text = NSAttributedString.alloc().initWithString_(text + comp.name());
                         comp.setValue_forKey_inState_(_text, "textAttributedString", nil);
                     });
-                } else {
+                }
+                else
+                {
+                    //Just set to selected top level cell
                     var _text = NSAttributedString.alloc().initWithString_(text + obj.name());
                     obj.setValue_forKey_inState_(_text, "textAttributedString", nil);
                 }
@@ -107,6 +110,7 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
         }
     });
 
+    //Call command
     document.commandManager().executeCommand(command);
 };
 
@@ -115,26 +119,61 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
  * dynamic function to loop through all screen elements.
  * useful for global fonts, colors,...
  */
-ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callback) {
-    // search for screens
-        // iterate through screens
-            // iterate through cells
-                // call callback
+ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callback)
+{
+    //Get all screens
+    var screens = this.core.getScreens();
 
-    var screens = this.core.getAllScreens();
-
-
-    utils.forEach(screens, function(i, screen){
+    //Loop all screens
+    utils.forEach(screens, function(screen)
+    {
+        //Get all cells including all deeper nested cells
         var cells = screen.deepOrderedComponents();
 
-        utils.forEach(cells, function(j, cell){
+        //Loop all cells and call defined cell callback logic
+        utils.forEach(cells, function(cell)
+        {
             callback(cell);
         });
     });
-
-
 };
 
+ANTETYPE_CORE_COMMANDS.prototype.getAllColorsInProject = function ()
+{
+    //Hold the final color result set without color duplicates
+    var colorResultSet = [];
+
+    //Helper function to push colors in an array without generating duplicates
+    var addColorToArray = function(color)
+    {
+        if(colorResultSet.indexOf(color) === -1)
+            colorResultSet.push(color);
+    };
+
+    //Loop all cells in project and get colors for defined properties for cells in all states
+    this.core.commands.searchForSomethingInProject(function(cell)
+    {
+        var cellColors = {
+            "bgColor": String(cell.backgroundColor().rgbaString()),
+            "borderTopColor": String(cell.borderBottomColor().rgbaString()),
+            "borderRightColor": String(cell.borderRightColor().rgbaString()),
+            "borderBottomColor": String(cell.borderBottomColor().rgbaString()),
+            "borderLeftColor": String(cell.borderLeftColor().rgbaString()),
+            "textColor": String(cell.textColor().rgbaString()),
+            "textShadowColor": String(cell.textShadowColor().rgbaString()),
+            "dropShadowColor": String(cell.dropShadowColor().rgbaString()),
+            "innerShadowColor": String(cell.innerShadowColor().rgbaString()),
+        };
+
+        //Push all colors from cellColor set
+        for(var cellColor in cellColors)
+        {
+            addColorToArray(cellColor);
+        }
+    });
+
+    return colorResultSet;
+};
 var nil = nil ? nil : null;
 
 /**
@@ -166,7 +205,7 @@ ANTETYPE_JS_CORE.prototype.document = document;
 ANTETYPE_JS_CORE.prototype.project = document.project();
 
 /**
- * Array of selected Objecs as NSArray
+ *
  * @return {*}
  */
 ANTETYPE_JS_CORE.prototype.getSelectedObjects = function () {
@@ -174,27 +213,11 @@ ANTETYPE_JS_CORE.prototype.getSelectedObjects = function () {
 };
 
 /**
- * get all screens
+ *
  * @return {*}
  */
-ANTETYPE_JS_CORE.prototype.getAllScreens = function () {
+ANTETYPE_JS_CORE.prototype.getScreens = function () {
     return this.project.orderedScreens();
-};
-
-/**
- * get current  Screen
- * @return {*} GDScreen
- */
-ANTETYPE_JS_CORE.prototype.getCurrentScreen = function () {
-    return this.selectionController.currentScreen();
-};
-
-/**
- * get selected Screens
- * @return {*}
- */
-ANTETYPE_JS_CORE.prototype.getSelectedScreens = function () {
-    return this.selectionController.selectedScreens();
 };
 
 /**
@@ -208,37 +231,3 @@ ANTETYPE_JS_CORE.prototype.countSelectedObjects = function () {
 
 
 
-
-/*
- command aufrufen
- */
-
-(
-/**
- *
- * @param antetype
- * @param utils
- */
-function (antetype, utils) {
-
-    var colors = [];
-
-    var addColorToArray = function(color){
-        if(colors.indexOf(color) === -1) {
-            colors.push(color);
-        }
-    };
-
-    antetype.commands.searchForSomethingInProject(function(cell){
-        var bgColor = String(cell.backgroundColor().rgbaString());
-        var borderBottomColor = String(cell.borderBottomColor().rgbaString());
-
-        //TODO check for other properties
-
-        log('BOTTOMCOLOR ' + borderBottomColor);
-        addColorToArray(bgColor);
-    });
-
-    log(colors);
-
-})(new ANTETYPE_JS_CORE(), new ANTETYPE_UTILS());
