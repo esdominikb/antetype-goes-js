@@ -200,22 +200,27 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
     var fontResultSet = {};
 
     //Helper function to push colors in an array without generating duplicates
-    var addFontSetToArray = function(family, fontSet)
+    var addFontSetToArray = function(family, state, fontSet)
     {
         //log("check " + fontResultSet[family]);
         if(typeof fontResultSet[family] === 'undefined') {
-            fontResultSet[family] = [];
+            fontResultSet[family] = {};
         }
 
-        if(fontResultSet[family].indexOf(fontSet) === -1)
-            fontResultSet[family].push(fontSet);
+        if(typeof fontResultSet[family][state] === 'undefined') {
+            fontResultSet[family][state] = [];
+        }
+
+        if(fontResultSet[family][state].indexOf(fontSet) === -1)
+            fontResultSet[family][state].push(fontSet);
     };
 
     //Loop all cells in project and get colors for defined properties for cells in all states
     this.core.commands.searchForSomethingInProject(true, function(cell, state)
     {
         var cellFontProperties = {},
-            family;
+            family,
+            state;
             //textShadowHorOff,
             //textShadowVerOff;
 
@@ -239,11 +244,11 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
         }
         else
         {
-            if(String(cell.textShadow()) === "1")
-            {
-                textShadowHorOff = (Number)(Math.sin(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset());
-                textShadowVerOff = (Number)(Math.cos(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset() * (-1.0));
-            }
+            //if(String(cell.textShadow()) === "1")
+            //{
+            //    textShadowHorOff = (Number)(Math.sin(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset());
+            //    textShadowVerOff = (Number)(Math.cos(cell.textShadowAngle() * Math.PI / 180.0) * cell.textShadowOffset() * (-1.0));
+            //}
 
             cellFontProperties = {
                 "font-family": String(cell.textFont().fontName()),
@@ -256,8 +261,10 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
             family = String(cell.textFont().familyName());
         }
 
+        state = cellFontProperties["font-family"] + cellFontProperties["font-size"] + cellFontProperties["line-height"] + cellFontProperties["line-height"];
+
         //Push all colors from cellColor set
-        addFontSetToArray(family, JSON.stringify(cellFontProperties));
+        addFontSetToArray(family, state, JSON.stringify(cellFontProperties));
     });
 
     return fontResultSet;
