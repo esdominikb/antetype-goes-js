@@ -2,9 +2,10 @@
  command aufrufen
  */
 
-(function (antetype, utils) {
+
+(function (antetype) {
 
     var foundColors = antetype.commands.getAllColorsInProject();
     log(foundColors);
 
-})(new ANTETYPE_JS_CORE(), new ANTETYPE_UTILS());
+})(ANTETYPE_JS_CORE_FACTORY.getInstance());

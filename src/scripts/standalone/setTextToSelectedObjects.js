@@ -7,9 +7,8 @@
 /**
  *
  * @param antetype
- * @param utils
  */
-function (antetype, utils) {
+function (antetype) {
 
 
     // set text only for first child in selected objects
@@ -18,4 +17,4 @@ function (antetype, utils) {
     // set text for all cells of selected objects
     antetype.commands.setTextToSelectedObjects('hah22a', true);
 
-})(new ANTETYPE_JS_CORE(), new ANTETYPE_UTILS());
+})(ANTETYPE_JS_CORE_FACTORY.getInstance());

@@ -31,9 +31,23 @@ function ANTETYPE_UTILS () {
     console.log('generate ANTETYPE_UTILS');
 };
 
+
 /**
  *
- * @param obj
+ */
+var ANTETYPE_UTILS_FACTORY = {
+    __instance: false,
+    getInstance: function(){
+        if (this.__instance == false) {
+            this.__instance = new ANTETYPE_UTILS();
+        }
+        return this.__instance;
+    }
+};
+
+/**
+ *
+ * @param collection
  * @param iterator
  */
 ANTETYPE_UTILS.prototype.forEach = function (collection, iterator) {
