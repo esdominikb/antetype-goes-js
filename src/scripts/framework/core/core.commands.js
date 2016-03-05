@@ -43,19 +43,33 @@ ANTETYPE_CORE_COMMANDS.prototype._createCommand = function (commandName, command
  * @param text text to set
  * @param applyToAllCells flag if text should be set to all Cells of selected objects
  */
-ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, applyToAllCells) {
+ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, applyToAllCells)
+{
+    //Hold core functions in this scope
     var core = this.core;
 
+    //Create a new command with execution logic
     var command = this._createCommand('JSSetTextCommandForSelection', {
-        execute: function () {
 
-            utils.forEach(core.getSelectedObjects(), function (obj) {
-                if (applyToAllCells) {
-                    utils.forEach(obj.deepOrderedComponents(), function (comp) {
+        execute: function ()
+        {
+            //Loop all selected objects/cells
+            utils.forEach(core.getSelectedObjects(), function (obj)
+            {
+                //Check if we apply command to all nested cells
+                //Or just to the selected cell without applying changes to nested childs
+                if (applyToAllCells)
+                {
+                    //Loop all nested childs
+                    utils.forEach(obj.deepOrderedComponents(), function (comp)
+                    {
                         var _text = NSAttributedString.alloc().initWithString_(text + comp.name());
                         comp.setValue_forKey_inState_(_text, "textAttributedString", nil);
                     });
-                } else {
+                }
+                else
+                {
+                    //Just set to selected top level cell
                     var _text = NSAttributedString.alloc().initWithString_(text + obj.name());
                     obj.setValue_forKey_inState_(_text, "textAttributedString", nil);
                 }
@@ -64,30 +78,99 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
         }
     });
 
+    //Call command
     document.commandManager().executeCommand(command);
 };
 
-
 /**
- * dynamic function to loop through all screen elements.
- * useful for global fonts, colors,...
+ * Ddynamic function to loop through all screen elements.
+ * useful to get project fonts, colors and so on
+ * @param checkStates Should states of a cell also be checked?
+ * @param callback Callback function that logic is called for each cell
  */
-ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (callback) {
-    // search for screens
-        // iterate through screens
-            // iterate through cells
-                // call callback
-
+ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (checkStates, callback)
+{
+    //Get all screens
     var screens = this.core.getScreens();
 
-
-    utils.forEach(screens, function(screen){
+    //Loop all screens
+    utils.forEach(screens, function(screen)
+    {
+        //Get all cells including all deeper nested cells
         var cells = screen.deepOrderedComponents();
 
-        utils.forEach(cells, function(cell){
-            callback(cell);
+        //Loop all cells and call defined cell callback logic
+        utils.forEach(cells, function(cell)
+        {
+            if(checkStates)
+            {
+                utils.forEach(cell.states().allObjects(), function(state) {
+                    callback(cell, state)
+                });
+            }
+            else
+            {
+                callback(cell);
+            }
         });
     });
+};
 
-    log(colors);
+/**
+ * Get all colors used in all screens
+ * @returns {Array}
+ */
+ANTETYPE_CORE_COMMANDS.prototype.getAllColorsInProject = function ()
+{
+    //Hold the final color result set without color duplicates
+    var colorResultSet = [];
+
+    //Helper function to push colors in an array without generating duplicates
+    var addColorToArray = function(color)
+    {
+        if(colorResultSet.indexOf(color) === -1)
+            colorResultSet.push(color);
+    };
+
+    //Loop all cells in project and get colors for defined properties for cells in all states
+    this.core.commands.searchForSomethingInProject(true, function(cell, state)
+    {
+        var cellColors = {};
+
+        if(state)
+        {
+            cellColors = {
+                "backgroundColor": String(cell.valueForKey_inState_("backgroundColor", state).rgbaString()),
+                "borderTopColor": String(cell.valueForKey_inState_("borderTopColor", state).rgbaString()),
+                "borderRightColor": String(cell.valueForKey_inState_("borderRightColor", state).rgbaString()),
+                "borderBottomColor": String(cell.valueForKey_inState_("borderBottomColor", state).rgbaString()),
+                "borderLeftColor":String(cell.valueForKey_inState_("borderLeftColor", state).rgbaString()),
+                "textColor": String(cell.valueForKey_inState_("textColor", state).rgbaString()),
+                "textShadowColor": String(cell.valueForKey_inState_("textShadowColor", state).rgbaString()),
+                "dropShadowColor": String(cell.valueForKey_inState_("dropShadowColor", state).rgbaString()),
+                "innerShadowColor": String(cell.valueForKey_inState_("innerShadowColor", state).rgbaString())
+            };
+        }
+        else {
+            cellColors = {
+                "backgroundColor": String(cell.backgroundColor().rgbaString()),
+                "borderTopColor": String(cell.borderBottomColor().rgbaString()),
+                "borderRightColor": String(cell.borderRightColor().rgbaString()),
+                "borderBottomColor": String(cell.borderBottomColor().rgbaString()),
+                "borderLeftColor": String(cell.borderLeftColor().rgbaString()),
+                "textColor": String(cell.textColor().rgbaString()),
+                "textShadowColor": String(cell.textShadowColor().rgbaString()),
+                "dropShadowColor": String(cell.dropShadowColor().rgbaString()),
+                "innerShadowColor": String(cell.innerShadowColor().rgbaString())
+            };
+        }
+
+        //Push all colors from cellColor set
+        for(var cellColor in cellColors)
+        {
+            addColorToArray(cellColors[cellColor]);
+        }
+    });
+
+    return colorResultSet;
 };
