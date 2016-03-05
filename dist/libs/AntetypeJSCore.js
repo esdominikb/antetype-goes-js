@@ -31,9 +31,23 @@ function ANTETYPE_UTILS () {
     console.log('generate ANTETYPE_UTILS');
 };
 
+
 /**
  *
- * @param obj
+ */
+var ANTETYPE_UTILS_FACTORY = {
+    __instance: false,
+    getInstance: function(){
+        if (this.__instance == false) {
+            this.__instance = new ANTETYPE_UTILS();
+        }
+        return this.__instance;
+    }
+};
+
+/**
+ *
+ * @param collection
  * @param iterator
  */
 ANTETYPE_UTILS.prototype.forEach = function (collection, iterator) {
@@ -41,16 +55,29 @@ ANTETYPE_UTILS.prototype.forEach = function (collection, iterator) {
         iterator(i, collection[i]);
     }
 };
-var utils = new ANTETYPE_UTILS();
 
 /**
  *
- * @param antetype_core
  * @constructor
  */
-function ANTETYPE_CORE_COMMANDS (antetype_core) {
-    this.core = antetype_core;
+function ANTETYPE_CORE_COMMANDS (core) {
+    this.core = core;
 }
+
+
+/**
+ *
+ */
+var ANTETYPE_CORE_COMMANDS_FACTORY = {
+    __instance: false,
+    getInstance: function (core) {
+        if (this.__instance == false) {
+            this.__instance = new ANTETYPE_CORE_COMMANDS(core);
+        }
+        return this.__instance;
+    }
+};
+
 
 /**
  *
@@ -97,14 +124,14 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
         execute: function ()
         {
             //Loop all selected objects/cells
-            utils.forEach(core.getSelectedObjects(), function (i, obj)
+            core.utils.forEach(core.getSelectedObjects(), function (i, obj)
             {
                 //Check if we apply command to all nested cells
                 //Or just to the selected cell without applying changes to nested childs
                 if (applyToAllCells)
                 {
                     //Loop all nested childs
-                    utils.forEach(obj.deepOrderedComponents(), function (j, comp)
+                    core.utils.forEach(obj.deepOrderedComponents(), function (j, comp)
                     {
                         var _text = NSAttributedString.alloc().initWithString_(text + comp.name());
                         comp.setValue_forKey_inState_(_text, "textAttributedString", nil);
@@ -133,21 +160,23 @@ ANTETYPE_CORE_COMMANDS.prototype.setTextToSelectedObjects = function (text, appl
  */
 ANTETYPE_CORE_COMMANDS.prototype.searchForSomethingInProject = function (checkStates, callback)
 {
+    var core = this.core;
+
     //Get all screens
     var screens = this.core.getAllScreens();
 
     //Loop all screens
-    utils.forEach(screens, function(i, screen)
+    core.utils.forEach(screens, function(i, screen)
     {
         //Get all cells including all deeper nested cells
         var cells = screen.deepOrderedComponents();
 
         //Loop all cells and call defined cell callback logic
-        utils.forEach(cells, function(j, cell)
+        core.utils.forEach(cells, function(j, cell)
         {
             if(checkStates)
             {
-                utils.forEach(cell.states().allObjects(), function(k, state) {
+                core.utils.forEach(cell.states().allObjects(), function(k, state) {
                     callback(cell, state)
                 });
             }
@@ -224,7 +253,21 @@ var nil = nil ? nil : null;
  * @constructor
  */
 function ANTETYPE_JS_CORE () {
-    this.commands = new ANTETYPE_CORE_COMMANDS(this);
+    this.commands = ANTETYPE_CORE_COMMANDS_FACTORY.getInstance(this);
+    this.utils = ANTETYPE_UTILS_FACTORY.getInstance();
+}
+
+/**
+ *
+ */
+var ANTETYPE_JS_CORE_FACTORY = {
+    __instance: false,
+    getInstance: function(){
+        if (this.__instance == false) {
+            this.__instance = new ANTETYPE_JS_CORE();
+        }
+        return this.__instance;
+    }
 };
 
 /**

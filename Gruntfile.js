@@ -32,7 +32,7 @@ module.exports = function (grunt) {
         var concatMappingFile = {};
         for(var i  in scripts){
             concatMappingFile[pathConfig.build + '/scripts/standalone/' + scripts[i]] = [
-                pathConfig.dist + '/libs/AntetypeJSCore.js',
+                //pathConfig.dist + '/libs/AntetypeJSCore.js',
                 pathConfig.src + '/scripts/standalone/' + scripts[i]
             ];
         }
