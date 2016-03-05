@@ -98,8 +98,21 @@ module.exports = function (grunt) {
                             }
                         ]
                     };
-                }else{
-                    return {};
+                }else {
+                    if(process.env.HOME == '/Users/dominikbuhl') {
+                        return {
+                            files: [
+                                {
+                                    expand: true,
+                                    cwd: pathConfig.dist + '/libs/',
+                                    src: ["AntetypeJSCore.js"],
+                                    dest: path.join(process.env.HOME, '/Ergosign/workspaces/hackathon/2016/antetype_repo/antetype/Prototyper\ Application')
+                                }
+                            ]
+                        };
+                    }else{
+                        return {};
+                    }
                 }
             }()
         },
