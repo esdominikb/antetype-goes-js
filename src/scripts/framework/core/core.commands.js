@@ -174,3 +174,61 @@ ANTETYPE_CORE_COMMANDS.prototype.getAllColorsInProject = function ()
 
     return colorResultSet;
 };
+
+/**
+ * Get all fonts used in all screens
+ * @returns {Array}
+ */
+ANTETYPE_CORE_COMMANDS.prototype.getAllFontsInProject = function ()
+{
+    //Hold the final color result set without color duplicates
+    var fontResultSet = {};
+
+    //Helper function to push colors in an array without generating duplicates
+    var addFontSetToArray = function(family, fontSet)
+    {
+        //log("check " + fontResultSet[family]);
+        if(typeof fontResultSet[family] === 'undefined') {
+            fontResultSet[family] = [];
+        }
+
+        if(fontResultSet[family].indexOf(fontSet) === -1)
+            fontResultSet[family].push(fontSet);
+    };
+
+    //Loop all cells in project and get colors for defined properties for cells in all states
+    this.core.commands.searchForSomethingInProject(true, function(cell, state)
+    {
+        var cellFontProperties = {},
+            family;
+
+        if(state)
+        {
+            cellFontProperties = {
+                "font-family": String(cell.valueForKey_inState_("textFont", state).fontName()),
+                "font-size": String(cell.valueForKey_inState_("textFont", state).pointSize() + 'px'),
+                "line-height": (String(cell.valueForKey_inState_("textLineHeightMultiply", state)) === "YES") ? String(cell.valueForKey_inState_("textLineHeight", state)) : String(cell.valueForKey_inState_("textLineHeight", state)) + 'px',
+                "color": String(cell.valueForKey_inState_("textColor", state).rgbaString())
+            };
+
+            family = String(cell.valueForKey_inState_("textFont", state).familyName());
+        }
+        else {
+            cellFontProperties = {
+                "font-family": String(cell.textFont().fontName()),
+                "font-size": String(cell.textFont().pointSize() + 'px'),
+                "line-height": (String(cell.textLineHeightMultiply()) === "YES") ? String(cell.textLineHeight()) : String(cell.textLineHeight()) + 'px',
+                "color": String(cell.textColor().rgbaString())
+            };
+
+            family = String(cell.textFont().familyName());
+        }
+
+
+
+        //Push all colors from cellColor set
+        addFontSetToArray(family, JSON.stringify(cellFontProperties));
+    });
+
+    return fontResultSet;
+};
