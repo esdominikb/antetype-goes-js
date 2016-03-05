@@ -94,7 +94,7 @@ module.exports = function (grunt) {
                                 expand: true,
                                 cwd: pathConfig.dist + '/libs/',
                                 src: ["AntetypeJSCore.js"],
-                                dest: path.join(process.env.HOME, '/Dokumente/antetype/Prototyper\ Application')
+                                dest: path.join(process.env.HOME, '/Documents/antetype/Prototyper\ Application')
                             }
                         ]
                     };
